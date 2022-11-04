@@ -1,0 +1,213 @@
+import 'package:flutter/material.dart';
+
+import 'package:location/location.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:flutter_map/flutter_map.dart';
+
+import '../utilities/current_location.dart';
+import '../utilities/geoapify_api_caller.dart';
+import '../widgets/pharma_location.dart';
+
+class PharmaciesMap extends StatefulWidget {
+  const PharmaciesMap({super.key});
+
+  @override
+  State<PharmaciesMap> createState() => _PharmaciesMapState();
+}
+
+Future<Map<String, Marker>> getAllMarkers() async {
+  List<NearbyPharmaData> list = await retrievePharmaData(10);
+  Map<String,Marker> map = {};
+
+  map['home'] = ;
+
+  return map;
+}
+
+class _PharmaciesMapState extends State<PharmaciesMap> {
+  LocationData? _locationData;
+  bool _dataParsed = false;
+
+  final Map<String, Marker> _markers =
+      {}; // List of locations .. first value is current location of user, other values are the locations of the pharmacies and hospitals
+
+  late Future<List<NearbyPharmaData>>
+      _recievedPharmaData; // List of pharmacy and hospital data already rendered so that they aren't rendered many times
+  late Future<LocationData?> _locationDataFuture;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // getCurrentLocation();
+    _locationDataFuture = currentLocationGetter();
+    _recievedPharmaData = retrievePharmaData(20);
+
+  }
+
+  Future<LocationData?> currentLocationGetter() async {
+    LocationData? locationData = await getLocationData();
+    return locationData;
+  }
+
+  Future getCurrentLocation() async {
+    LocationData? locationData = await getLocationData();
+    if (mounted) {
+      // setState(() {
+      _locationData = locationData;
+      if (_locationData != null) {
+        _markers['home'] = Marker(
+            point:
+                LatLng((_locationData?.latitude)!, (_locationData?.longitude)!),
+            builder: (BuildContext context) {
+              return const Icon(
+                Icons.accessibility,
+                color: Colors.black,
+              );
+            });
+      }
+      // });
+    }
+  }
+
+  void addPharmaData(List<NearbyPharmaData> pdata) {
+    // final parsedPharmadata = await retrievePharmaData((_locationData?.latitude)!, (_locationData?.longitude)!, 20);
+    if (mounted) {
+      // setState(() {
+      for (var data in pdata) {
+        if (!_markers.containsKey(data.name)) {
+          _markers[data.name] = createMarker(data);
+        }
+      }
+      _dataParsed = true;
+      // });
+    }
+  }
+
+  List<Marker> mapToList(Map<String, Marker> map) {
+    List<Marker> list = [];
+    map.forEach((key, value) {
+      list.add(value);
+    });
+    return list;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // print(_locationData);
+    //TODO: Add Widget to show parsed hospitals and pharmacies
+    // if (_locationData != null) {
+    // addPharmaData(_recievedPharmaData);
+    return FutureBuilder(
+        future: _locationDataFuture,
+        builder: (context, snapshot) {
+          print('${snapshot.connectionState} for location');
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return const Center(child: Text('loading location'));
+            case ConnectionState.done:
+              if (snapshot.hasData) {
+                var recDat = snapshot.data;
+                return FutureBuilder(
+                    future: _recievedPharmaData,
+                    builder: (context, snapshot) {
+                      print(snapshot.connectionState);
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return const Center(child: Text('locating api info'));
+                        case ConnectionState.done:
+                          if (snapshot.hasData) {
+                            // getCurrentLocation();
+                            // LocationData? locationData = await getLocationData();
+                            addPharmaData(snapshot.data!);
+                            return Scaffold(
+                              appBar: PreferredSize(
+                                preferredSize: const Size.fromHeight(20.0),
+                                child: AppBar(
+                                  title: const Text('Pharmacies Near Me'),
+                                ),
+                              ),
+                              body: FlutterMap(
+                                options: MapOptions(
+                                  center: LatLng((recDat?.latitude)!,
+                                      (recDat?.longitude)!),
+                                  minZoom: 1,
+                                  maxZoom: 25,
+                                  zoom: 15,
+                                  slideOnBoundaries: true,
+                                  screenSize: MediaQuery.of(context).size,
+                                ),
+                                children: [
+                                  TileLayer(
+                                    urlTemplate:
+                                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                    userAgentPackageName:
+                                        'dev.fleaflet.flutter_map.example',
+                                  ),
+                                  MarkerLayer(
+                                    markers: mapToList(_markers),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            return const Center(
+                              child: Text('no data lol'),
+                            );
+                          }
+                        default:
+                          return const CircularProgressIndicator();
+                      }
+                    });
+              } else {
+                return const Center(child: Text('Nodata'));
+              }
+              break;
+            default:
+              return const CircularProgressIndicator();
+          }
+        });
+    // if (_dataParsed) {
+    //   return Scaffold(
+    //     appBar: PreferredSize(
+    //       preferredSize: const Size.fromHeight(20.0),
+    //       child: AppBar(
+    //         title: const Text('Pharmacies Near Me'),
+    //       ),
+    //     ),
+    //     body: FlutterMap(
+    //       options: MapOptions(
+    //         center: LatLng(
+    //             (_locationData?.latitude)!, (_locationData?.longitude)!),
+    //         minZoom: 1,
+    //         maxZoom: 25,
+    //         zoom: 15,
+    //         slideOnBoundaries: true,
+    //         screenSize: MediaQuery
+    //             .of(context)
+    //             .size,
+    //       ),
+    //       children: [
+    //         TileLayer(
+    //           urlTemplate:
+    //           'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    //           userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+    //         ),
+    //         MarkerLayer(
+    //           markers: mapToList(_markers),
+    //         )
+    //       ],
+    //     ),
+    //   );
+    // } else {
+    //   return const Center(
+    //       child: Text('loading pharmacy data...')
+    //   );
+    // }
+    // } else {
+    //   return const Center(
+    //       child: Text('loading map...')
+    //   );
+    // }
+  }
+}

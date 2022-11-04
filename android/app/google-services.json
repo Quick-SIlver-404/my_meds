@@ -1,0 +1,97 @@
+{
+  "project_info": {
+    "project_number": "39346257105",
+    "project_id": "medcareproto",
+    "storage_bucket": "medcareproto.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39346257105:android:5fbaee72bec1760f5a19f0",
+        "android_client_info": {
+          "package_name": "com.example.barebones"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "39346257105-5ne5bjra902rg43ovonricbjkrm6nkku.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5Lkf7opEhIxOMHhD7Zf_l7ZOVQ9jG3rc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "39346257105-5ne5bjra902rg43ovonricbjkrm6nkku.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39346257105:android:3f864141301b63f85a19f0",
+        "android_client_info": {
+          "package_name": "com.example.culminate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "39346257105-5ne5bjra902rg43ovonricbjkrm6nkku.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5Lkf7opEhIxOMHhD7Zf_l7ZOVQ9jG3rc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "39346257105-5ne5bjra902rg43ovonricbjkrm6nkku.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39346257105:android:fc9016e92d6090005a19f0",
+        "android_client_info": {
+          "package_name": "com.example.my_meds"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "39346257105-5ne5bjra902rg43ovonricbjkrm6nkku.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5Lkf7opEhIxOMHhD7Zf_l7ZOVQ9jG3rc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "39346257105-5ne5bjra902rg43ovonricbjkrm6nkku.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

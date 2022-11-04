@@ -1,16 +1,12 @@
-# my_meds
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Team-Quicksilver
+## Project name : MyMed
+### Objectives:
+To make an user friendly application that has the following features:
+- Lets user set reminders for their medications
+- Set reminders for custom activities
+- View nearby pharmacies and hospitals
+- Send SMS to close ones that are in the emergency contacts
+- Lets you add and remove emergency contacts
+- Web search of the medicines
+- Share the list of the medications
+- Multilingual application (Nepali and English)
